@@ -1,3 +1,7 @@
 algs
 algs.s
 allbn.o
+ltc
+*.err
+.~*.odt#
+.*.swp

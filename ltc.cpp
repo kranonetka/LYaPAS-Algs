@@ -709,7 +709,7 @@ vector<string> SubProgram(string name, vector<string> functions, map<string, str
 			int ncomp = SToN(SubStr(tmp1[4],1));
 			code = tmp1[2];
 			if(tmp1[3] == "-")
-				stext = stext + "  mov [ebp+" + NToS((ncomp-1)*4 + 220) + "],0\n";
+				stext = stext + "  mov [ebp+" + NToS((ncomp-1)*4 + 220) + "],dword 0\n";
 			else if(tmp1[3] == "%")
 				stext = stext + "  mov ebx,[ebp+" + NToS((ncomp-1)*4 + 1020) + "]\n  mov [ebp+" + NToS((ncomp-1)*4 + 620) + "],ebx\n";
 			continue;
