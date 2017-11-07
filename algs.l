@@ -1,57 +1,49 @@
 head(/)
-@+F1(256)
-/F1<C
-Q1>5⇒n Q1&31↪1 ∆n
-§1 @+L2(n) n⇒Q2
-*s2v(F1/L2)
-Q1⇒n OQ1 *v2s(L2,n/F1)
-@+F3(256)
-/F3<C
-Q3>5⇒n Q3&31↪2 ∆n
-§2 @+L4(n) n⇒Q4
-*s2v(F3/L4)
-Q3⇒n OQ3 *v2s(L4,n/F3)
-***Q1 - used bits in L2
-***Q2 - capacity of L2
-***Q3 - user bits in L4
-***Q4 - capacity of L4
-/'L2: '>C /F1>C
-/'\n'>C
-/'L4: '>C /F3>C
-/'\n======\n'>C
-/F1>C
-/'\n'>C
-/F3>C
-/'\n'>C
-L2⊕L4⇒L2
-Q1⇒n OQ1 *v2s(L2,n/F1)
-/F1>C
-/' ⊕\n'>C
-/F3>C /'\n'>C
-L2&L4⇒L4
-Q3⇒n OQ3 *v2s(L4,n/F3)
-/F3>C /' &\n'>C
-/F1>C /'\n'>C
-L2∨L4⇒L2
-Q1⇒n OQ1 *v2s(L2,n/F1)
-/F1>C /' ∨\n'>C
+@+L1(100)
+*const0(L1,5/L1)
+*printVal(L1.0/) /'!'>C
+*weight(L1,5/q)
+*printVal(q/)
 **
+
+weight(L1,n/q)
+Oq ↑(n<5)2
+In>5⇒n Oi
+§1 L1i%+q⇒q ∆i ↑(i<n)1 →3
+§2 31-In⇒n L1.0<n % ⇒q
+§3**
+
+const0(L1,n/L1)
+OL1 ↑(n<5)1
+OQ1 ∆Q1 →2
+§1 In>5⇒Q1
+§2 **
+
+const1(L1,n/L1)
+OL1 ↑(n<5)2
+In>5⇒n Oi
+§1 ⁻L1i ∆i ↑(i<n)1 n⇒Q1 →4
+§2 In⇒n Oi Ob
+§3 b<1⇒b b∨1⇒b ∆i ↑(i<n)3
+b⇒L1.0 OQ1 ∆Q1
+§4 **
 
 ***string to vector
 s2v(F1/L2)
-***F1 - input string ('0' will be interpreted as 0, other as 1)
-***L2 - output vector (capacity must be declared equal or greater than Q1/32 + !isZero(Q1%32))
+***F1 - input string
+***L2 - output vector
+Q1%⇒q ↑(q=1)1 /'ERROR: STRING CONTAINTS UNCORRENT COUNT OF BITS\n'>C →3
 Oi
 §1 F1i⊕'0'↪2 i>5⇒j i&31⇒b L2j∨Ib⇒L2j
 §2 ∆i ↑(i<Q1)1
-**
+§3 j+1⇒Q2 **
 
 ***vector to string
-v2s(L1,q/F2)
+v2s(L1,n/F2)
 ***L1 - input vector
-***q - number of used bits in the vector
+***n - count of variables
 ***F2 - output string (capacity must be declared equal or greater than q)
-Oi
+In⇒q Oi
 §1 i>5⇒j i&31⇒b L1j&Ib↦2 '0'@>F2 ∆i ↑(i<q)1 →3
 §2 '1'@>F2 ∆i ↑(i<q)1
 §3 **
