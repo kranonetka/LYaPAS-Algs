@@ -709,7 +709,7 @@ vector<string> SubProgram(string name, vector<string> functions, map<string, str
 			int ncomp = SToN(SubStr(tmp1[4],1));
 			code = tmp1[2];
 			if(tmp1[3] == "-")
-				stext = stext + "  mov [ebp+" + NToS((ncomp-1)*4 + 220) + "],dword 0\n";
+				stext = stext + "  mov dword [ebp+" + NToS((ncomp-1)*4 + 220) + "],0\n";
 			else if(tmp1[3] == "%")
 				stext = stext + "  mov ebx,[ebp+" + NToS((ncomp-1)*4 + 1020) + "]\n  mov [ebp+" + NToS((ncomp-1)*4 + 620) + "],ebx\n";
 			continue;
@@ -889,7 +889,13 @@ vector<string> SubProgram(string name, vector<string> functions, map<string, str
 			tau = 0;
 			continue;
 		}
-		tmp1 = GetStr("^[[:space:]]*(⇒|O|∆|∇|⁻|\\+|\\-|\\*|∨|&|⊕|<|>|:|/|;|)[[:space:]]*(([a-zZ])|(I[0-9]+)|(I[a-z])|([QS][0-9]+)|([QS][a-zZ])|([LF][0-9]+[a-z])|([LF][0-9]+\\([a-z][\\+\\-][0-9]+\\))|([LF][0-9]+\\.[0-9]+)|(X))", code);
+		tmp1 = GetStr("^[[:space:]]*X", code); 
+		if(tmp1[0] != "$$$") { // Присвоение собственной переменной случайного значения
+			code = tmp1[2];
+			stext = stext + "  mov eax,[_rand]\n  mov edx,97781173\n  mul edx\n  add eax,800001\n  mov [_rand],eax\n";
+			continue;
+		}
+		tmp1 = GetStr("^[[:space:]]*(⇒|O|∆|∇|⁻|\\+|\\-|\\*|∨|&|⊕|<|>|:|/|;|)[[:space:]]*(([a-zZ])|(I[0-9]+)|(I[a-z])|([QS][0-9]+)|([QS][a-zZ])|([LF][0-9]+[a-z])|([LF][0-9]+\\([a-z][\\+\\-][0-9]+\\))|([LF][0-9]+\\.[0-9]+))", code);
 		if(tmp1[0] != "$$$") { //операция с переменной(сдвиги как для переменных, так и для логических комплексов; зависит от tau)
 			code = tmp1[2];
 			if(tmp1[3] == "") {
@@ -992,12 +998,6 @@ vector<string> SubProgram(string name, vector<string> functions, map<string, str
 				stext = stext + maxvaluecomp(tmp1[4]);
 			else if((tmp1[3] == "⇕") && (tau != 0))
 				stext = stext + permutationcomp(tmp1[4], metka);
-			continue;
-		}
-		tmp1 = GetStr("^[[:space:]]*X", code); 
-		if(tmp1[0] != "$$$") { // Присвоение собственной переменной случайного значения
-			code = tmp1[2];
-			stext = stext + "  mov eax,[_rand]\n  mov edx,97781173\n  mul edx\n  add eax,800001\n  mov [_rand],eax\n";
 			continue;
 		}
 		tmp1 = GetStr("^[[:space:]]*T", code);
