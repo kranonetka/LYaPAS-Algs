@@ -124,6 +124,7 @@ string ReadFile(const char *filename) {
 }
 
 //******************************************************************************** 
+
 vector<string> Split_comma(string s) {
 	string tmp;
 	vector<string> res, tmp2;
@@ -140,24 +141,11 @@ vector<string> Split_comma(string s) {
 }
 
 //******************************************************************************** 
-vector<string> Split_Bracket(const char *br1, const char *br2, string str)
-{
-	vector<string> tmp;
-	int pos = str.find("("); 
-	tmp.push_back(str.substr(0,pos));
-	int pos1 = str.find(")");
-	tmp.push_back(str.substr(pos+1,pos1-pos-1));
-	pos = str.size();	
-	tmp.push_back(str.substr(pos1+1,pos-pos1-1));
-	return tmp;
-}
-
-//******************************************************************************** 
 vector<string> Split(string str) {
 	vector<string> results, tmp1, tmp2, utr;
 	string ex = str; 
 	while(1) {
-		tmp1 = GetStr("(\n|^)[[:space:]]*([a-zA-Z0-9_]+)\\(([a-zA-Z0-9,[:space:]/]+)\\)", ex);
+		tmp1 = GetStr("(\n|^)[[:space:]]*([a-zA-Z]+[a-zA-Z0-9_]*)\\(([a-zA-Z0-9,[:space:]/]+)\\)", ex);
 	  	if(tmp1[0] == "$$$")
 			break;
 	  	results.push_back(tmp1[0]); 
@@ -203,7 +191,8 @@ int GetAddr(string name) {
 		}
 		else {
 			tmp = GetStr("^[Z]$", name);
-			if(tmp[0] != "$$$")	addr = 108;
+			if(tmp[0] != "$$$")
+				addr = 108;
 			else
 				Internal_Error(name, "Неверное имя " + name);
 		}
@@ -217,8 +206,10 @@ string SetReg(string name, string op, string reg) {
 	vector<string> tmp;
 	string stext = ""; 	
 	tmp = GetStr("^([a-zZ])|([QS][0-9]+$)", name);
-	if(tmp[0] != "$$$") // a-z, Q1, S2
+	if(tmp[0] != "$$$") { // a-z, Q1, S2
 		stext = stext + "  " + op + " " + reg + ",[ebp+" + NToS(GetAddr(name)) + "]\n";
+		return stext;	
+	}	
 	tmp = GetStr("^([LF])([0-9]+)([a-z])$", name);
 	if(tmp[0] != "$$$") { //L1a, L5b, F12c
 		stext = stext + "  mov ebx,[ebp+" + NToS(GetAddr(tmp[5])) + "]\n";
@@ -229,14 +220,15 @@ string SetReg(string name, string op, string reg) {
 			stext = stext + "  mov ebx,[ebx]\n  and ebx,0x000000ff\n  " + op + " " + reg + ",ebx\n";
 		else
 			stext = stext + "  " + op + " " + reg + ",[ebx]\n";
+		return stext;
 	} // проверка по ёмкости?!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	tmp = GetStr("^([LF])([0-9]+)\\(([a-z])\\([+-])(\\d+)\\)$", name);
+	tmp = GetStr("^([LF])([0-9]+)\\(([a-z])([+-])([0-9]+)\\)$", name);
 	if(tmp[0] != "$$$") { //L1(a+5), L5(b-4), F12(c+1)
 		stext = stext + "  mov ebx,[ebp+" + NToS(GetAddr(tmp[5])) + "]\n";
 		if(tmp[6] == "+")
-			stext = stext + "  add ebx,"+tmp[7] + "]\n";
+			stext = stext + "  add ebx, " + tmp[7] + "\n";
 		else
-			stext = stext + "  sub ebx,"+tmp[7] + "]\n";
+			stext = stext + "  sub ebx, " + tmp[7] + "\n";
 		if(tmp[3] == "L")
 			stext = stext + "  shl ebx,byte 2\n";
 		stext =  stext + "  add ebx,[ebp+" + NToS((SToN(tmp[4]) - 1)*4 + 220) + "]\n";
@@ -244,37 +236,54 @@ string SetReg(string name, string op, string reg) {
 			stext = stext + "  mov ebx,[ebx]\n  and ebx,0x000000ff\n  " + op + " " + reg + ",ebx\n";
 		else
 			stext = stext + "  " + op + " " + reg + ",[ebx]\n";
+		return stext;
 	} // проверка по ёмкости?!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	tmp = GetStr("^I([a-z])$", name);
 	if(tmp[0] != "$$$")	{ // Ia
 		stext = stext + "  mov ebx,[ebp+" + NToS(GetAddr(tmp[3])) + "]\n  and ebx,0x1f\n";
 		stext = stext + "  " + op + " " + reg + ",[_I+ebx*4]\n";
+		return stext;
 	}
 	tmp = GetStr("^I([0-9]+)", name);
 	if(tmp[0] != "$$$")	{ // I8
 		int i = SToN(tmp[3]);
-		if(i>31) Internal_Error(stext,"номер > 31 : " + name);
+		if(i > 31)
+			Internal_Error(stext,"номер > 31 : " + name);
 		stext = stext + "  " + op + " " + reg + ",[_I+" + NToS(i*4) + "]\n";
+		return stext;
 	}
 	tmp = GetStr("^([LF])([0-9]+)\\.([0-9]+)$", name);
 	if(tmp[0] != "$$$")	{ // L1.0, L5.2, F12.3
 		stext = stext + "  mov ebx,[ebp+" + NToS((SToN(tmp[4]) - 1)*4 + 220) + "]\n";
 		if(tmp[3] == "F") {
-			stext = stext + "  add ebx," + tmp[5] + "\n";
-			stext = stext + "  mov ebx,[ebx]\n  and ebx,0x000000ff\n  " + op + " " + reg + ",ebx\n";
+			stext = stext + "  " + op + " " + reg + ",[ebx+" + tmp[5] + "]\n";
+			stext = stext + "  and " + reg + ",0x000000ff\n";
 		}
 		else
 			stext = stext + "  " + op + " " + reg + ",[ebx+" + NToS((SToN(tmp[5]))*4) + "]\n";
+		return stext;
 	} // проверка по ёмкости?!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	tmp = GetStr("^([0-9]+)$", name);
-	if(tmp[0] != "$$$")	// десятичная константа
+	if(tmp[0] != "$$$") {
 		stext = stext + "  " + op + " " + reg + ", " + name + "\n";
+		return stext;
+	}
 	tmp = GetStr("^'.'$", name);
 	if(tmp[0] != "$$$") {	// символьная константа
-		tmp = Split_Bracket("'", "'", name);
 		stext = stext + "  " + op + " " + reg + "," + NToS((int)tmp[1][1]) + "\n";
+		return stext;
 	} 
-	return stext; 
+	tmp = GetStr("^([K])([a-z])\\)$", name);
+	if(tmp[0] != "$$$") { // Ka
+		stext = stext + "  mov ebx,[ebp+" + NToS(GetAddr(tmp[4])) + "]\n  " + op +  " " + reg + ", [ebx]\n";
+		return stext;
+	}
+	tmp = GetStr("^([K])([0-9]+)\\)$", name);
+	if(tmp[0] != "$$$") { // K7078
+		stext = stext + op + " " + reg + ",[" + tmp[4] + "]\n";
+		return stext;
+	}
+	Internal_Error(name,"неизвестная конструкция:"+name);
 }
 
 //******************************************************************************** 
@@ -397,9 +406,13 @@ string Call(string name, string callsign, map<string, string> functions)
 		v_to = inv[i];
 		tmp1 = GetStr("^[a-z]$", v_to);
 		if(tmp1[0]!="$$$")	{ // переменная
-			tmp1 = GetStr("^[a-z]$", v_from);
+			tmp1 = GetStr("^[a-zZ]$", v_from);
 			if(tmp1[0]!="$$$") { // переменная
-			  stext = stext + "  mov eax,[ebp+" + NToS(((int)v_from[0] - (int)'a' + 1)*4) + "]\n  mov [edx+" + NToS(((int)v_to[0] - (int)'a' + 1)*4) + "],eax\n";
+				if(tmp1[1][0] == 'Z') {
+					stext = stext + "  mov eax, [ebp+108]\n  mov [edx+" + NToS(((int)v_to[0] - (int)'a' + 1)*4) + "],eax\n";
+				}
+				else
+			  		stext = stext + "  mov eax,[ebp+" + NToS(((int)v_from[0] - (int)'a' + 1)*4) + "]\n  mov [edx+" + NToS(((int)v_to[0] - (int)'a' + 1)*4) + "],eax\n";
 				continue;
 			}
 			tmp1 = GetStr("^Q([0-9]+)$", v_from); 
@@ -571,7 +584,6 @@ string CreateArray(string array_name, string size)
 				stext = stext + "  shl eax,2\n";
 			else
 				stext = stext + "  and eax,0xfffffff0\n  add eax,16\n";
-			stext = stext + "  mov [ebp+" + NToS(SToN(addr)+400) + "],eax\n";
 			stext = stext + "  add [_addrbim],eax\n";
 		}
 		else {
@@ -681,7 +693,7 @@ vector<string> SubProgram(string name, vector<string> functions, map<string, str
 				stext = stext + "  dec eax\n  add [ebp+" + NToS((SToN(tmp1[3])-1)*4 + 1020) + "],eax\n";
 			continue;
 		}
-		tmp1 = GetStr("^[[:space:]]*\\@\\+S([0-9]+)\\(([^)]+)\\)", code);		
+		tmp1 = GetStr("^[[:space:]]*\\@\\+S([0-9]+)\\(([^)]+)\\)", code); 		
 		if(tmp1[0] != "$$$") { // Увеличение ёмкости комплекса
 			code = tmp1[2];
 			stext = stext + AppendArray(tmp1[3], tmp1[4]);
@@ -790,13 +802,13 @@ vector<string> SubProgram(string name, vector<string> functions, map<string, str
 			stext = stext + CmpJmp(tmp1[3], tmp1[4], tmp1[5], tmp1[6]);
 			continue;
 		}
-		tmp1 = GetStr("^[[:space:]]*⇻([0-9]+)", code); 
+		tmp1 = GetStr("^[[:space:]]*↣([0-9]+)", code); 
 		if(tmp1[0] != "$$$") { // Уход
 			code = tmp1[2];
 			stext = stext + "  call .P" + tmp1[3] + "\n";
 			continue;
 		}
-		tmp1 = GetStr("^[[:space:]]*⇞", code); 
+		tmp1 = GetStr("^[[:space:]]*↢", code); 
 		if(tmp1[0] != "$$$") { // Возврат
 			code = tmp1[2];
 			stext = stext + "  ret\n";
@@ -889,12 +901,6 @@ vector<string> SubProgram(string name, vector<string> functions, map<string, str
 			tau = 0;
 			continue;
 		}
-		tmp1 = GetStr("^[[:space:]]*X", code); 
-		if(tmp1[0] != "$$$") { // Присвоение собственной переменной случайного значения
-			code = tmp1[2];
-			stext = stext + "  mov eax,[_rand]\n  mov edx,97781173\n  mul edx\n  add eax,800001\n  mov [_rand],eax\n";
-			continue;
-		}
 		tmp1 = GetStr("^[[:space:]]*(⇒|O|∆|∇|⁻|\\+|\\-|\\*|∨|&|⊕|<|>|:|/|;|)[[:space:]]*(([a-zZ])|(I[0-9]+)|(I[a-z])|([QS][0-9]+)|([QS][a-zZ])|([LF][0-9]+[a-z])|([LF][0-9]+\\([a-z][\\+\\-][0-9]+\\))|([LF][0-9]+\\.[0-9]+))", code);
 		if(tmp1[0] != "$$$") { //операция с переменной(сдвиги как для переменных, так и для логических комплексов; зависит от tau)
 			code = tmp1[2];
@@ -903,7 +909,7 @@ vector<string> SubProgram(string name, vector<string> functions, map<string, str
 				tau = 0;
 			}
 			else if(tmp1[3] == "⇒")
-					stext = stext + StoreTau(tmp1[4], "mov");
+				stext = stext + StoreTau(tmp1[4], "mov");
 			else if(tmp1[3] == "∆")	
 				stext = stext + SetReg(tmp1[4], "mov","eax") + "  inc eax\n" + StoreTau(tmp1[4], "mov");
 			else if(tmp1[3] == "∇")	
@@ -1000,6 +1006,18 @@ vector<string> SubProgram(string name, vector<string> functions, map<string, str
 				stext = stext + permutationcomp(tmp1[4], metka);
 			continue;
 		}
+		tmp1 = GetStr("^[[:space:]]*X", code); 
+		if(tmp1[0] != "$$$") { // Присвоение собственной переменной случайного значения
+			code = tmp1[2];
+			stext = stext + "  mov eax,[_rand]\n  mov edx,97781173\n  mul edx\n  add eax,800001\n  mov [_rand],eax\n";
+			continue;
+		}
+		tmp1 = GetStr("^[[:space:]]*⇒[[:space:]]*X", code);
+		if(tmp1[0] != "$$$") { // Присвоение начального значения ГСП
+			code = tmp1[2];
+			stext = stext + "  mov [_rand], eax\n";
+			continue;
+		}
 		tmp1 = GetStr("^[[:space:]]*T", code);
 		if(tmp1[0] != "$$$") { // Установка значения собственной переменной в зависимости от времени
 			code = tmp1[2];
@@ -1015,6 +1033,197 @@ vector<string> SubProgram(string name, vector<string> functions, map<string, str
 			}
 			else
 				stext = stext + WeightComp(metka);
+			continue;
+		}
+		tmp1 = GetStr("^[[:space:]]*_\\([[:space:]]*([0-9]+|[a-z])[[:space:]]*,[[:space:]]*([0-9]+|[a-z])[[:space:]]*\\)", code);
+		if(tmp1[0] != "$$$") {  // операция проекция _(1, 2) или _(1, m) или _(m, 1) или _(m, n)
+			code = tmp1[2];
+			tmp2 = GetStr("^[a-z]$", tmp1[3]);
+			if(tmp2[0] != "$$$")
+				stext = stext + "  mov edx, [ebp+" + NToS(((int)tmp1[3][0] - (int)'a' + 1)*4) + "]\n";
+			else
+				stext = stext + "  mov edx, " + tmp1[3] + "\n";
+			tmp2 = GetStr("^[a-z]$", tmp1[4]);
+			if(tmp2[0] != "$$$")
+				stext = stext + "  mov ebx, [ebp+" + NToS(((int)tmp1[4][0] - (int)'a' + 1)*4) + "]\n";
+			else
+				stext = stext + "  mov ebx, " + tmp1[4] + "\n";
+				
+			if(tau == 0)
+				stext = stext + "  mov cl, byte 31\n  sub cl, bl\n  shl eax, cl\n  add cl, dl\n  shr eax, cl\n";
+			else
+				stext = stext + Projection(metka);
+			continue;
+		}
+		tmp1 = GetStr("^[[:space:]]*(≥|≤)L([0-9]+)", code);
+		if(tmp1[0] != "$$$") {  // наибольший и наименьший элемент комплекса помещаются в тау(поскольку размер элемента комплекса = размеру переменной, то результат лежит в соб. переменной)
+			code = tmp1[2];
+			tau = 0;
+			stext = stext + "  mov edi, [ebp+" + NToS(((SToN(tmp1[4])-1)*4)+220) + "]\n  mov ecx, [ebp+" + NToS(((SToN(tmp1[4])-1)*4)+1020) + "]\n";
+			if(tmp1[3] == "≥") {
+				stext = stext + "  mov eax, [edi]\n mov [ebp+108], dword 0\n  times 4 inc edi\n  cmp ecx, 1\n je .M" + NToS(metka + 2) + "\n  dec ecx\n  xor ebx, ebx\n  inc ebx\n.M" + NToS(metka) + ":\n";
+				stext = stext + "  mov edx, [edi]\n  cmp eax, edx\n  jae .M" + NToS(metka + 1) + "\n  mov eax, edx\n mov [ebp+108], ebx\n.M" + NToS(metka + 1) + ":\n";
+				stext = stext + "  times 4 inc edi\n  inc ebx\n loop .M" + NToS(metka) + "\n.M" + NToS(metka + 2) + ":\n";
+			}
+			else {
+				stext = stext + "  mov eax, [edi]\n mov [ebp+108], dword 0\n  times 4 inc edi\n  cmp ecx, 1\n je .M" + NToS(metka + 2) + "\n  dec ecx\n  xor ebx, ebx\n  inc ebx\n.M" + NToS(metka) + ":\n";
+				stext = stext + "  mov edx, [edi]\n  cmp eax, edx\n  jbe .M" + NToS(metka + 1) + "\n  mov eax, edx\n mov [ebp+108], ebx\n.M" + NToS(metka + 1) + ":\n";
+				stext = stext + "  times 4 inc edi\n  inc ebx\n loop .M" + NToS(metka) + "\n.M" + NToS(metka + 2) + ":\n";
+			}
+			metka += 3;
+			continue;
+		}
+		tmp1 = GetStr("^[[:space:]]*(≪|≫)([a-z]|[0-9]+)(|\\([ ]*([a-z]|[0-9]+)[ ]*(|,[ ]*([a-z]|[0-9]+)[ ]*)\\))", code);
+		if(tmp1[0] != "$$$") {  // циклические сдвиги булева вектора тау в границах (подробнее см. статью в "Прикладной математики")
+			code = tmp1[2];
+			tmp2 = GetStr("^[a-z]$", tmp1[4]);
+			if(tmp2[0] != "$$$")
+				stext = stext + "  mov eax, [ebp+" + NToS(((int)tmp1[4][0] - (int)'a' + 1)*4) + "]\n";
+			else
+				stext = stext + "  mov eax, " + tmp1[4] + "\n";
+			if(tmp1[5] == "") {
+				stext = stext + "  mov ebx, [ebp+112]\n  shl ebx, 5\n  xor edx, edx\n  div ebx\n  mov eax, edx\n  mov ebx, 0\n  mov ecx, [ebp+112]\n";
+			}
+			else {
+				tmp2 = GetStr("^[a-z]$", tmp1[6]);
+				if(tmp2[0] != "$$$")
+					stext = stext + "  mov edx, [ebp+" + NToS(((int)tmp1[6][0] - (int)'a' + 1)*4) + "]\n";
+				else
+					stext = stext + "  mov edx, " + tmp1[6] + "\n";
+				if(tmp1[7] == "") {
+					stext = stext + "  mov ecx, edx\n  mov ebx, ecx\n shl ebx, 5\n  xor edx, edx\n  div ebx\n  mov eax, edx\n  mov ebx, 0\n";
+				}
+				else {
+					tmp2 = GetStr("^[a-z]$", tmp1[8]);
+					if(tmp2[0] != "$$$")
+						stext = stext + "  mov ebx, [ebp+" + NToS(((int)tmp1[8][0] - (int)'a' + 1)*4) + "]\n";
+					else
+						stext = stext + "  mov ebx, " + tmp1[8] + "\n";
+					stext = stext + "  mov ecx, ebx\n  sub ecx, edx\n  inc ecx\n  mov esi, edx\n  mov ebx, ecx\n  shl ebx, 5\n  xor edx, edx\n  div ebx\n  mov eax, ebx\n";
+					stext = stext + "  mov ebx, esi\n";
+				}
+			}
+			if(tmp1[3] == "≪") {
+				stext = stext + LeftCycleShiftOnPoints(metka);
+			}
+			else
+				stext = stext + RightCycleShiftOnPoints(metka);
+			continue;
+		}
+		tmp1 = GetStr("^[[:space:]]*⇓\\([ ]*([a-z]|[0-9]+)[ ]*,[ ]*([a-z]|[0-9]+)[ ]*\\)", code);
+		if(tmp1[0] != "$$$") {  // операция редукция
+			code = tmp1[2];
+			tmp2 = GetStr("^[a-z]$", tmp1[3]);
+			if(tmp2[0] != "$$$")
+				stext = stext + "  mov edx, [ebp+" + NToS(((int)tmp1[3][0] - (int)'a' + 1)*4) + "]\n";
+			else
+				stext = stext + "  mov edx, " + tmp1[3] + "\n";
+			tmp2 = GetStr("^[a-z]$", tmp1[4]);
+			if(tmp2[0] != "$$$")
+				stext = stext + "  mov ebx, [ebp+" + NToS(((int)tmp1[4][0] - (int)'a' + 1)*4) + "]\n";
+			else
+				stext = stext + "  mov ebx, " + tmp1[4] + "\n";
+			
+			if(tau == 0) {
+				stext = stext + "  mov esi, eax\n  mov edi, 1\n  mov cl, dl\n  shl edi, cl\n  dec edi\n  and esi, edi\n  mov cl, bl\n  inc cl\n  shr eax, cl\n  mov cl, dl\n";
+				stext = stext + "  shl eax, cl\n  or eax, esi\n";
+			}
+			else
+				stext = stext + Reduction(metka);
+			continue;
+		}
+		tmp1 = GetStr("^[[:space:]]*⇑([a-z]|[0-9]+)([a-z]|L([0-9]+)(|[a-z]|\\.[0-9]+))(|\\([ ]*([a-z]|[0-9]+)[[ ]*(|,[ ]*([a-z]|[0-9]+)[ ]*)\\))", code);
+		if(tmp1[0] != "$$$") { // операция вставки вектора лямбда в тау (подробнее см. статью в журнале "Прикладная дискретная математика")
+			code = tmp1[2];
+			tmp2 = GetStr("^[a-z]$", tmp1[3]);
+			if(tmp2[0] != "$$$")
+				stext = stext + "  mov edx, [ebp+" + NToS(((int)tmp1[3][0] - (int)'a' + 1)*4) + "]\n";
+			else
+				stext = stext + "  mov edx, " + tmp1[3] + "\n";
+			stext = stext + "  mov ecx, [ebp+112]\n  cmp edx, 1\n  jb _errend\n  cmp ecx, edx\n  jb _errend\n";
+			tmp2 = GetStr("^L([0-9]+)$", tmp1[4]);
+			if(tmp2[0] != "$$$") {
+				if(tmp1[7] == "") {
+					stext = stext + "  mov edi, [ebp+" + NToS(((SToN(tmp2[3])-1)*4)+220) + "]\n  mov ecx, [ebp+" + NToS(((SToN(tmp2[3])-1)*4)+1020) + "]\n";
+					stext = stext + "  cmp edx, ecx\n  jb _errend\n  mov esi, ebp\n  sub esi, 64\n  sub edx, ecx\n  shl edx, 2\n  sub esi, edx\n.M" + NToS(metka) + ":\n";
+					stext = stext + "  mov eax, [edi]\n  mov [esi], eax\n  times 4 dec esi\n  times 4 inc edi\n  loop .M" + NToS(metka) + "\n";
+				}
+				else {
+					stext = stext + "  mov edi, [ebp+" + NToS(((SToN(tmp2[3])-1)*4)+220) + "]\n  mov eax, [ebp+" + NToS(((SToN(tmp2[3])-1)*4)+1020) + "]\n";
+					if(tmp1[9] == "") {
+						stext = stext + "  mov ecx, " + tmp1[8] + "\n  cmp eax, ecx\n  jbe _errend\n";
+						stext = stext + "  inc ecx\n  cmp edx, ecx\n  jb _errend\n  mov esi, ebp\n  sub esi, 64\n  sub edx, ecx\n  shl edx, 2\n  sub esi, edx\n.M" + NToS(metka) + ":\n";
+						stext = stext + "  mov eax, [edi]\n  mov [esi], eax\n  times 4 dec esi\n  times 4 inc edi\n  loop .M" + NToS(metka) + "\n";
+					}
+					else {
+						stext = stext + "  mov ebx, " + tmp1[8] + "\n  mov ecx, " + tmp1[10] + "\n  cmp eax, ecx\n  jbe _errend\n  cmp ecx, ebx\n  jb _errend\n  sub ecx, ebx\n  inc ecx\n";
+						stext = stext + "  cmp edx, ecx\n  jb _errend\n  mov esi, ebp\n  sub esi, 64\n  sub edx, ecx\n  shl edx, 2\n  sub esi, edx\n  shl ebx, 2\n  add edi, ebx\n.M" + NToS(metka) + ":\n";
+						stext = stext + "  mov eax, [edi]\n  mov [esi], eax\n  times 4 dec esi\n  times 4 inc edi\n  loop .M" + NToS(metka) + "\n";
+					}
+				}
+				metka += 1;
+			}
+			else {
+				stext = stext + "  mov esi, ebp\n sub esi, 64\n  sub edx, 1\n  shl edx, 2\n  sub esi, edx\n";
+				if(tmp1[4][0] == 'L') {
+					stext = stext + "  mov edi, [ebp+" + NToS(((SToN(tmp1[5])-1)*4)+220) + "]\n";
+					if(tmp1[6][0] == '.') {
+						string s_tmp = SubStr(tmp1[6], 1);
+						stext = stext + "  mov ebx, " + s_tmp + "\n  shl ebx, 2\n";
+					}
+					else {
+						stext = stext + "  mov ebx, [ebp+" + NToS(((int)tmp1[6][0] - (int)'a' + 1)*4) + "]\n  shl ebx, 2\n";
+					}
+					stext = stext + "  add edi, ebx\n  mov eax, [edi]\n  mov [esi], eax\n";
+				}
+				else {
+					stext = stext + "  mov eax, [ebp+" + NToS(((int)tmp1[4][0] - (int)'a' + 1)*4) + "]\n  mov [esi], eax\n";
+				}
+			}
+			continue;
+		}
+		tmp1 = GetStr("^[[:space:]]*\\|([a-z]|L[0-9]+|L[0-9]+[a-z]|L[0-9]+\\.[0-9]+|[0-9]+)", code);
+		if(tmp1[0] != "$$$") {  // Операция конкатенация |m |L4 |L4m |L4.12 |612543
+			code = tmp1[2];
+			tmp2 = GetStr("[a-z]", tmp1[3]);
+			if(tmp2[0] != "$$$") {
+				stext = stext + "  mov ebx, ebp\n  add ebx, " + NToS(((int)tmp2[1][0] - (int)'a' + 1)*4) + "\n  mov ecx, 1\n";
+			}
+			tmp2 = GetStr("L([0-9]+)", tmp1[3]);
+			if(tmp2[0] != "$$$") {
+				int nomc = SToN(tmp2[3]);
+				stext = stext + "  mov ebx, [ebp+" + NToS((nomc - 1)*4 + 220) + "]\n  mov ecx, [ebp+" + NToS((nomc - 1)*4 + 1020) + "]\n";
+			}
+			tmp2 = GetStr("L([0-9]+)([a-z])", tmp1[3]);
+			if(tmp2[0] != "$$$") {
+				int nomc = SToN(tmp2[3]);
+				stext = stext + "  mov ebx, [ebp+" + NToS((nomc - 1)*4 + 220) + "]\n  mov edx, [ebp+" + NToS(((int)tmp2[4][0] - (int)'a' + 1)*4) + "]\n  shl edx, 2\n  add ebx, edx\n  mov ecx, 1\n";
+			}
+			tmp2 = GetStr("L([0-9]+)\\.([0-9]+)", tmp1[3]);
+			if(tmp2[0] != "$$$") {
+				int nomc = SToN(tmp2[3]);
+				stext = stext + "  mov ebx, [ebp+" + NToS((nomc - 1)*4 + 220) + "]\n  mov edx, " + tmp2[4] + "\n  shl edx, 2\n  add ebx, edx\n  mov ecx, 1\n";
+			}
+			tmp2 = GetStr("[0-9]+", tmp1[3]);
+			if(tmp2[0] != "$$$") {
+			    stext = stext + "  mov ebx, " + tmp2[1] + "\n";
+			    if(tau == 0) {
+			        stext = stext + "  mov [ebp-64], eax\n  mov [ebp-68], ebx\n  mov ecx, 2\n  mov [ebp+112], ecx\n";
+			        tau = !0;
+			    }
+			    else {
+			        stext = stext + "  mov ecx, [ebp+112]\n  shl ecx, byte 2\n  mov edi, ebp\n  sub edi, 64\n  sub edi, ecx\n  mov [edi], ebx\n  shr ecx, byte 2\n  inc ecx\n  mov [ebp+112], ecx\n";
+			    }
+			}
+			else {
+			    if(tau == 0) {
+				    stext = stext + "  mov [ebp-64], eax\n  mov eax, 1\n  mov [ebp+112], eax\n" + Concatenation(metka);
+				    tau = !0;
+			    }
+			    else {
+				    stext = stext + Concatenation(metka);
+			    }
+			}
 			continue;
 		}
 		tmp1 = GetStr("^[[:space:]]*¬", code);
@@ -1184,12 +1393,6 @@ vector<string> SubProgram(string name, vector<string> functions, map<string, str
 			stext = stext + "  add ebx,ecx\n" + SetReg('S'+tmp1[4],"mov","edx") + "  cmp ebx,edx\n  ja _errend\n  cld\n  rep movsb\n";
 			continue;
 		} 
-		
-		tmp1 = GetStr("^[[:space:]]*⇒[[:space:]]*X", code); // Присвоение X значения собственной переменной
-		if(tmp1[0] != "$$$") {	
-			stext = stext + "  mov [_rand],eax\n";
-			continue;
-		}
 		tmp1 = GetStr("^[[:space:]]*\\*\\*", code); // Конец программы
 		if(tmp1[0] != "$$$") 	break;
 		tmp1 = GetStr("^[[:space:]]*", code);
