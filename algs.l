@@ -1,7 +1,13 @@
 head(/)
 T⇒X
 @+L1(10240)
-6⇒n Oi
+@+F2(10)
+/'Count of arguments: '>C /F2<C *s2n(F2/n)
+OQ2
+In>1⇒m
+/'Expected number of ones: '>C *printVal(m/) /'\n'>C
+/'Count of checks: '>C /F2<C *s2n(F2/k)
+Oi
 §1
 	Oj Os
 	§2
@@ -9,9 +15,9 @@ T⇒X
 		*weight(L1,n/q)
 		s+q⇒s
 		∆j
-		↑(j<512)2
+		↑(j<k)2
 	
-	s/512⇒s
+	s/k⇒s
 	/'Averange: '>C *printVal(s/) /'\n'>C
 	∆i
 	↑(i<10)1
@@ -102,7 +108,7 @@ OQ2 In⇒i Oi
 s2n(F1/a)
 ***F1 - input string (must contain only numerals)
 ***a - output number
-Oa Qi
+Oa Oi
 §1
 	a*10+F1i-'0'⇒a
 	∆i
