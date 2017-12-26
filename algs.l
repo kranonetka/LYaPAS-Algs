@@ -1,10 +1,18 @@
 head(/)
+T⇒X
 @+L1(10240)
 6⇒n Oi
 §1
-	*Xgen(L1,n/L1)
-	*weight(L1,n/q)
-	*printVal(q/) /'\n'>C
+	Oj Os
+	§2
+		*Xgen(L1,n/L1)
+		*weight(L1,n/q)
+		s+q⇒s
+		∆j
+		↑(j<512)2
+	
+	s/512⇒s
+	/'Averange: '>C *printVal(s/) /'\n'>C
 	∆i
 	↑(i<10)1
 **
@@ -108,4 +116,4 @@ printVal(a/)
 §1
 	a;10+'0'@>F1.0
 	a/10⇒a↦1
-/F1>C @-F1 **
+/F1>C **
