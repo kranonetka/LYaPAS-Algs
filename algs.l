@@ -1,33 +1,35 @@
 head(/)
 T⇒X
-@+L1(10240)
-@+F2(10)
-/'Count of arguments: '>C /F2<C *s2n(F2/n)
-OQ2
-In>1⇒m
-/'Expected number of ones: '>C *printVal(m/) /'\n'>C
-/'Count of checks: '>C /F2<C *s2n(F2/k)
-Oi
+Oi ∆i
 §1
-	Oj Os
-	§2
-		*Xgen(L1,n/L1)
-		*weight(L1,n/q)
-		s+q⇒s
-		∆j
-		↑(j<k)2
-	
-	s/k⇒s
-	/'Averange: '>C *printVal(s/) /'\n'>C
+	X⇒a
+	*printVal(a,2/) /'\n'>C
+	*reverseBits(a/b)
+	*printVal(b,2/) /'\n====\n'>C
 	∆i
-	↑(i<10)1
+	i↦1
+**
+
+reverseBits(a/b)
+***a - vector to reverse
+***b - reversed vector
+a > 1 & 1431655765 ⇒ v
+a & 1431655765 < 1 ∨ v ⇒ b ***swap odd and even bits
+	b > 2 & 858993459 ⇒ v
+	b & 858993459 < 2 ∨ v ⇒ b ***swap consecutive pairs
+b > 4 & 252645135 ⇒ v
+b & 252645135 < 4 ∨ v ⇒ b ***swap nibbles
+	b > 8 & 16711935 ⇒ v
+	b & 16711935 > 8 ∨ v ⇒ b ***swap bytes
+b > 16 ⇒ v
+b < 16 ∨ v ⇒ b ***swap 2-byte long pairs
 **
 
 Xgen(L1,n/L1)
 ↑(n<5)2
 In>5⇒n Oi
 §1
-	X>15⇒a X⊕a⇒L1i
+	X>16⇒a X⊕a⇒L1i
 	∆i
 	↑(i<n)1
 n⇒Q1
@@ -115,11 +117,17 @@ Oa Oi
 	↑(i<Q1)1
 **
 
-***print value of variable
-printVal(a/)
-***a - input variable
+***Print value of variable
+***a - variable
+***b - base
+printVal(a,b/)
 @+F1(10) OQ1
 §1
-	a;10+'0'@>F1.0
-	a/10⇒a↦1
-/F1>C  @-F1 **
+	a;b+'0'⇒c
+	↑(c<':')2
+		c+'a'-'9'⇒c
+	§2
+	c@>F1.0
+	a/b⇒a↦1
+/F1>C
+**
