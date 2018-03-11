@@ -1,28 +1,28 @@
 head(/)
 T⇒X
-Oi ∆i
+Oi
 §1
 	X⇒a
-	*printVal(a,2/) /'\n'>C
+	/'a:	'>C *printBool(a/) /'\n'>C
 	*reverseBits(a/b)
-	*printVal(b,2/) /'\n====\n'>C
+	/'b:	'>C *printBool(b/) /'\n========\n'>C
 	∆i
-	i↦1
+	↑(i<10)1
 **
 
 reverseBits(a/b)
 ***a - vector to reverse
 ***b - reversed vector
-a > 1 & 1431655765 ⇒ v
-a & 1431655765 < 1 ∨ v ⇒ b ***swap odd and even bits
-	b > 2 & 858993459 ⇒ v
-	b & 858993459 < 2 ∨ v ⇒ b ***swap consecutive pairs
-b > 4 & 252645135 ⇒ v
-b & 252645135 < 4 ∨ v ⇒ b ***swap nibbles
-	b > 8 & 16711935 ⇒ v
-	b & 16711935 > 8 ∨ v ⇒ b ***swap bytes
-b > 16 ⇒ v
-b < 16 ∨ v ⇒ b ***swap 2-byte long pairs
+	a > 1 & 55555555h ⇒ v
+	a & 55555555h < 1 ∨ v ⇒ b
+b > 2 & 33333333h ⇒ v
+b & 33333333h < 2 ∨ v ⇒ b
+	b > 4 & 0f0f0f0fh ⇒ v
+	b & 0f0f0f0fh < 4 ∨ v ⇒ b
+b > 8 & 00ff00ffh ⇒ v
+b & 00ff00ffh < 8 ∨ v ⇒ b
+	b > 16 ⇒ v
+	b < 16 ∨ v ⇒ b
 **
 
 Xgen(L1,n/L1)
@@ -117,10 +117,25 @@ Oa Oi
 	↑(i<Q1)1
 **
 
+***Print boolean vector of 32bit variable
+printBool(a/)
+***a - variable
+@+F1(32) OQ1
+§1
+	a & 1 + '0'@>F1.0
+	a > 1 ⇒ a
+	a↦1
+↑(Q1=32)3
+§2
+	'0'@>F1.0
+	↑(Q1<32)2
+§3 /F1>C
+**
+
 ***Print value of variable
+printVal(a,b/)
 ***a - variable
 ***b - base
-printVal(a,b/)
 @+F1(10) OQ1
 §1
 	a;b+'0'⇒c
