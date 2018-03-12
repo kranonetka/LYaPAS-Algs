@@ -1,13 +1,42 @@
 head(/)
 T⇒X
+@+L1(4096) OQ1
+@+F2(32768) OQ2
 Oi
 §1
-	X⇒a
-	/'a:	'>C *printBool(a/) /'\n'>C
-	*reverseBits(a/b)
-	/'b:	'>C *printBool(b/) /'\n========\n'>C
+	X;8+2⇒n
+	*Xgen(L1,n/L1)
+	*v2s(L1,n/F2)
+	/F2>C /'\n'>C
+	*isSelfdual(L1,n/f)
+	*printVal(f,2/) /'\n====\n'>C
 	∆i
 	↑(i<10)1
+**
+
+isSelfdual(L1,n/f)
+***L1 - boolean function
+***n - the number of args
+***f - flag(1/0)
+Of ∆f
+↑(n<6)3
+§1
+	Q1⇒j ∇j
+	Oi ∆i
+	*reverseBits(L1j/b)
+	b¬ ⊕ L1i ↦2
+	∆i ∇j
+	↑(i<j)1
+	→4
+§2
+	Of →4
+§3
+	*reverseBits(L1.0/b)
+	∇n
+	L1.0>In⇒a
+	31-In⇒n
+	b¬>n⊕a↦2
+§4
 **
 
 reverseBits(a/b)
@@ -89,7 +118,7 @@ Oi
 v2s(L1,n/F2)
 ***L1 - input vector
 ***n - count of variables
-***F2 - output string (capacity must be declared equal or greater than q)
+***F2 - output string (capacity must be declared equal or greater than 2**n)
 OQ2 In⇒i Oi
 §1
 	i>5⇒j
