@@ -1,42 +1,40 @@
 head(/)
 T⇒X
-@+L1(4096) OQ1
-@+F2(32768) OQ2
 Oi
 §1
-	X;8+2⇒n
-	*Xgen(L1,n/L1)
-	*v2s(L1,n/F2)
-	/F2>C /'\n'>C
-	*isSelfdual(L1,n/f)
-	*printVal(f,2/) /'\n====\n'>C
+	X⇒a
+	/'a:	'>C *printBool(a/) /'\n'>C
+	*reverseBits(a/b)
+	/'b:	'>C *printBool(b/) /'\n========\n'>C
 	∆i
 	↑(i<10)1
 **
 
-isSelfdual(L1,n/f)
-***L1 - boolean function
-***n - the number of args
-***f - flag(1/0)
-Of ∆f
-↑(n<6)3
+isMonotonic(L1,n/f)
+↑(n<6)1
+	In > 5 ⇒ n
+	*isMonotonicHelper(L1,0,n/f)
+	→2
 §1
-	Q1⇒j ∇j
-	Oi ∆i
-	*reverseBits(L1j/b)
-	b¬ ⊕ L1i ↦2
-	∆i ∇j
-	↑(i<j)1
-	→4
+	/'n must be >= 6\n'>C
 §2
-	Of →4
+**
+
+isMonotonicHelper(L1,l,h/f)
+Of
+h > 1 ⇒ m ⇒ j
+Oi
+§1
+	↑(L1i>L1j)3
+	∆i ∆j
+	↑(j<h)1
+	∆f
+	h - l ⊕ 1 ↪3
+	*isMonotonicHelper(L1,l,m/f)
+	f↪3
+	*isMonotonicHelper(L1,m,h/f)
+	→3
 §3
-	*reverseBits(L1.0/b)
-	∇n
-	L1.0>In⇒a
-	31-In⇒n
-	b¬>n⊕a↦2
-§4
 **
 
 reverseBits(a/b)
@@ -118,7 +116,7 @@ Oi
 v2s(L1,n/F2)
 ***L1 - input vector
 ***n - count of variables
-***F2 - output string (capacity must be declared equal or greater than 2**n)
+***F2 - output string (capacity must be declared equal or greater than q)
 OQ2 In⇒i Oi
 §1
 	i>5⇒j
