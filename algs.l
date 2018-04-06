@@ -1,19 +1,50 @@
 head(/)
 T⇒X
 @+L1(1000000)
+@+L2(1000000)
 Oi
 §1
-	*const1(i/L1)
-	/'====\ni: '>C *printVal(i,10/) /'\n'>C
-	*printBoolVect(L1,i/)
-	*weight(L1,i/w)
-	/'\nweight: '>C *printVal(w,10/)
-	/'\n====\n'>C
+	*genBF(6/L1)
+	
+	***revBF(L1,5/L2)
+	L1¬ ⇒ L2
+	*printBF(L1,6/) /'\n'>C
+	*printBF(L2,6/) /'\n====\n'>C
 	∆i
 	↑(i<10)1
 **
 
-isMonotonic(L1,n/f)
+***Boolean function self-dual check
+isBFSelfdual(L1,n/f)
+***L1 - boolean function
+***n - the number of args
+***f - flag(1/0)
+Of ∆f
+In + 31 > 5 ⇒ q
+q ⊕ 1 ↪3
+	q⇒j ∇j
+	Oi
+	§1
+		*reverseBits(L1j/b)
+		b¬ ⊕ L1i ↦2
+		∆i ∇j
+		↑(i<j)1
+		→4
+	§2
+		Of
+		→4
+§3
+	*reverseBits(L1.0/b)
+	32 - In ⇒ s
+	b¬ > s ⊕ L1.0 ↦2
+§4
+	**
+
+***Boolean function monotonic check
+isBFMonotonic(L1,n/f)
+***L1 - boolean function
+***n - the number of args
+***f - flag(1/0)
 ↑(n<6)1
 	In > 5 ⇒ n
 	*isMonotonicHelper(L1,0,n/f)
@@ -23,7 +54,7 @@ isMonotonic(L1,n/f)
 §2
 	**
 
-isMonotonicHelper(L1,l,h/f)
+isBFMonotonicHelper(L1,l,h/f)
 Of
 h > 1 ⇒ m ⇒ j
 Oi
@@ -40,6 +71,51 @@ Oi
 §3
 **
 
+isBFEquals(L1,L2,n/f)
+***L1 - op1
+***L2 - op2
+***n - the number of args of L1 and L2
+***f - flag(1/0)
+Of ∆f
+In + 31 > 5 ⇒ n
+Oi
+§1
+	L1i ⊕ L2i ↦2
+	∆i
+	↑(i<n)1
+	→3
+§2
+	Of
+§3
+	**
+
+***reverse boolean function
+revBF(L1,n/L2)
+***L1 - boolean function
+***n - the number of args
+***L2 - reversed boolean function
+OQ2
+In + 31 > 5 ⇒ q ⇒ j
+	∇j
+	§1
+		L1j @>L2
+		∇j
+		↑(j<q)1
+q ⊕ 1 ↪3
+	Oj
+	§2
+		*reverseBits(L2j/b)
+		b ⇒ L2j
+		∆j
+		↑(j<Q2)2
+		→4	
+§3
+	32 - In ⇒ s
+	*reverseBits(L2.0/b)
+	b > s ⇒ L2.0
+§4
+	**
+
 reverseBits(a/b)
 ***a - vector to reverse
 ***b - reversed vector
@@ -55,7 +131,10 @@ b & 00ff00ffh < 8 ∨ v ⇒ b
 	b < 16 ∨ v ⇒ b
 **
 
-Xgen(n/L1)
+***generate random boolean function
+genBF(n/L1)
+***n - the number of args
+***L1 - generated boolean function
 OQ1
 ↑(n<5)2
 In > 5 ⇒ n
@@ -70,7 +149,11 @@ In > 5 ⇒ n
 §3
 	**
 
-weight(L1,n/q)
+***Calculate weight of boolean function
+BFweight(L1,n/q)
+***L1 - boolean function
+***n - the number of args
+***q - weight of boolean function
 Oq
 ↑(n<5)2
 In > 5 ⇒ n
@@ -86,12 +169,18 @@ Oi
 §3
 	**
 
-const0(n/L1)
+***generate const 0 boolean function
+BFconst0(n/L1)
+***n - the number of args
+***L1 - const0 boolean function
 In + 31 > 5 ⇒ Q1
 OL1
 **
 
-const1(n/L1)
+***generate const 1 boolean function
+BFconst1(n/L1)
+***n - the number of args
+***L1 - const1 boolean function
 In + 31 > 5 ⇒ Q1
 ⁻L1
 Q1 ⊕ 1 ↦1 ***↑(Q1≠1)1
@@ -111,7 +200,10 @@ Oa Oi
 	↑(i<Q1)1
 **
 
-printBoolVect(L1,n/)
+***print vector of values of boolean function
+printBF(L1,n/)
+***L1 - boolean function
+***n - the number of args
 In + 31 > 5 ⇒ n ⇒ i
 ∇i
 §1
