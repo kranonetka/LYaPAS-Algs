@@ -56,7 +56,8 @@ isBFMonotonic(L1,n/f)
 
 isBFMonotonicHelper(L1,l,h/f)
 Of
-h > 1 ⇒ m ⇒ j
+h - l > 1 ⇒ m
+l + m ⇒ j
 Oi
 §1
 	↑(L1i>L1j)3
@@ -217,15 +218,15 @@ printBool(a/)
 ***a - variable
 @+F1(32) OQ1
 §1
-	a & 1 + '0'@>F1.0
-	a > 1 ⇒ a
-	a↦1
+	a & 1 + '0' @>F1.0
+	a > 1 ⇒ a ↦1
 ↑(Q1=32)3
 §2
-	'0'@>F1.0
+	'0' @>F1.0
 	↑(Q1<32)2
-§3 /F1>C
-**
+§3
+	/F1>C
+	**
 
 ***Print value of variable
 printVal(a,b/)
