@@ -1,17 +1,76 @@
 head(/)
 T⇒X
-@+L1(1000000)
-@+L2(1000000)
+@+L1(100) OQ1 ∆Q1
+@+L2(100)
 Oi
 §1
-	*genBF(6/L1)
-	
-	***revBF(L1,5/L2)
-	L1¬ ⇒ L2
-	*printBF(L1,6/) /'\n'>C
-	*printBF(L2,6/) /'\n====\n'>C
+	X > 16 ⇒ a
+	X ⊕ a ⇒ L1.0
+	*MobiusBF(L1,5/L2)
+	*printBF(L1,5/) /'\n'>C
+	*printBF(L2,5/) /'\n========\n'>C
 	∆i
-	↑(i<10)1
+	↑(i<20)1
+**
+
+MobiusBF(L1,n/L2)
+L1 ⇒ L2
+In + 31 > 5 ⇒ q
+q ⊕ 1 ↦1	***↑(q≠1)1
+*Mobius(L2.0/b)
+32 - In ⇒ n
+b < n > n ⇒ L2.0
+→100
+§1
+	Oi
+	§2
+		*Mobius(L2i/b)
+		b ⇒ L2i
+		∆i
+		↑(i<q)2
+		***todotodotodo
+§100
+	**
+
+Mobius(a/b)
+a ⇒ b
+b < 1	& AAAAAAAAh ⊕ b ⇒ b
+b < 2	& CCCCCCCCh ⊕ b ⇒ b
+b < 4	& F0F0F0F0h ⊕ b ⇒ b
+b < 8	& FF00FF00h ⊕ b ⇒ b
+b < 16	⊕ b ⇒ b
+**
+
+isBFT1(L1,n/f)
+Of
+In + 31 > 5 ⇒ q
+∇q
+L1q & 80000000h ↪1
+	∆f
+§1
+	**
+
+***Boolean function belongs T0 check
+isBFT0(L1,n/f)
+***L1 - boolean function
+***n - the number of args
+***f - flag(1/0)
+L1.0 & 1 ⇒ f
+**
+
+***Boolean function belongs T1 check
+isBFT1(L1,n/f)
+***L1 - boolean function
+***n - the number of args
+***f - flag(1/0)
+↑(n<6)1
+	In + 31 > 5 ⇒ q
+	∇q
+	L1q & 80000000h > 31 ⇒ f
+	→2
+§1
+	In & L1.0 > n ⇒ f
+§2
 **
 
 ***Boolean function self-dual check
@@ -50,7 +109,7 @@ isBFMonotonic(L1,n/f)
 	*isMonotonicHelper(L1,0,n/f)
 	→2
 §1
-	/'n must be >= 6\n'>C
+	/'n must be > 5\n'>C
 §2
 	**
 
@@ -60,7 +119,8 @@ h - l > 1 ⇒ m
 l + m ⇒ j
 Oi
 §1
-	↑(L1i>L1j)3
+	L1i & L1j ⊕ L1i ↦3
+	***↑(L1i>L1j)3
 	∆i ∆j
 	↑(j<h)1
 	∆f
@@ -68,9 +128,8 @@ Oi
 	*isMonotonicHelper(L1,l,m/f)
 	f↪3
 	*isMonotonicHelper(L1,m,h/f)
-	→3
 §3
-**
+	**
 
 isBFEquals(L1,L2,n/f)
 ***L1 - op1
@@ -137,17 +196,15 @@ genBF(n/L1)
 ***n - the number of args
 ***L1 - generated boolean function
 OQ1
-↑(n<5)2
-In > 5 ⇒ n
+In + 31 > 5 ⇒ q
 §1
 	X > 16 ⇒ a
 	X ⊕ a @>L1
-	↑(Q1<n)1
-	→3
-§2
+	↑(Q1<q)1
+Q1 ⊕ 1 ↦ 2	***↑(Q1≠1)2
 	32 - In ⇒ n
-	X > n @>L1
-§3
+	L1.0 > n ⇒ L1.0
+§2
 	**
 
 ***Calculate weight of boolean function
@@ -165,8 +222,7 @@ Oi
 	↑(i<n)1
 	→3
 §2
-	32 - In ⇒ n
-	L1.0 < n % ⇒ q
+	In < 1 - 1 & L1.0 % ⇒ q
 §3
 	**
 
@@ -185,8 +241,7 @@ BFconst1(n/L1)
 In + 31 > 5 ⇒ Q1
 ⁻L1
 Q1 ⊕ 1 ↦1 ***↑(Q1≠1)1
-	32 - In ⇒ n
-	L1.0 > n ⇒ L1.0
+	In < 1 - 1 & L1.0 ⇒ L1.0
 §1
 **
 
