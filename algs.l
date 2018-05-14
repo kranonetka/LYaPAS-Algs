@@ -20,17 +20,20 @@ S1 ⇒ s
 *MobiusBF(L1,n/L2)
 L2.0 & FFFFFFFEh ⇒ L2.0	***Зануляем бит, соответствующий набору аргументов из нулей
 Oi
-In + 31 > 5 ⇒ q	***Считаем кол-во элементов в L2
 §1	***цикл зануления битов, соответствующих наборам аргументов с одной единицей
 	Ii > 5 ⇒ k	***Находим индекс нужного элемента
 	Ii & 31 ⇒ s	***Находим номер нужного бита
 	Is ¬ & L2k ⇒ L2k	***Зануляем нужный бит
 	∆i
-	↑(i<q)1
-	*BFweight(L2,n/q)
-	q ↦2	***↑(q≠0)2 (f=0)
-	∆f
+	↑(i<n)1
+In + 31 > 5 ⇒ q
+Oi
 §2
+	L2i % ↦3	***(w(L2i)≠0)3 (f=0)
+	∆i
+	↑(i<q)2
+	∆f
+§3
 	**
 
 ***Преобразование Мёбиуса булевой функции
@@ -77,11 +80,18 @@ l ⇒ i
 
 isBFT1(L1,n/f)
 Of
-In + 31 > 5 ⇒ q
-∇q
-L1q & 80000000h ↪1
+↑(n>4)1
+	In ⇒ n
+	∇n
+	In & L1.0 ↪2
 	∆f
+	→2
 §1
+	In > 5 ⇒ q
+	∇q
+	L1q & 80000000h ↪2
+	∆f
+§2
 	**
 
 ***Boolean function belongs T0 check
@@ -89,22 +99,7 @@ isBFT0(L1,n/f)
 ***L1 - boolean function
 ***n - the number of args
 ***f - flag(1/0)
-L1.0 & 1 ⇒ f
-**
-
-***Boolean function belongs T1 check
-isBFT1(L1,n/f)
-***L1 - boolean function
-***n - the number of args
-***f - flag(1/0)
-↑(n<6)1
-	In + 31 > 5 ⇒ q
-	∇q
-	L1q & 80000000h > 31 ⇒ f
-	→2
-§1
-	In & L1.0 > n ⇒ f
-§2
+L1.0 & 1 ⊕ 1 ⇒ f
 **
 
 ***Boolean function self-dual check
@@ -293,7 +288,6 @@ Oa Oi
 printBF(L1,n/)
 ***L1 - boolean function
 ***n - the number of args
-***Вывод происходит от младших битов к старшим справа налево
 ↑(n>4)4
 	@+F2(16) OQ2
 	32 - In ⇒ s
