@@ -5,8 +5,10 @@ T⇒X
 3 ⇒ n
 *genBF(n/L1)
 *printBF(L1,n/) /'\n'>C
+*printBF(L1,5/) /'\n'>C
 *MobiusBF(L1,n/L2)
 *printBF(L2,n/) /'\n'>C
+*printBF(L2,5/) /'\n'>C
 /'======\n'>C
 5 ⇒ n
 *genBF(n/L1)
