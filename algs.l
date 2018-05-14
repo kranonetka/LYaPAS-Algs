@@ -1,45 +1,67 @@
 head(/)
 T⇒X
-@+L1(100) OQ1 ∆Q1
+@+L1(100)
 @+L2(100)
-Oi
-§1
-	X > 16 ⇒ a
-	X ⊕ a ⇒ L1.0
-	*MobiusBF(L1,5/L2)
-	*printBF(L1,5/) /'\n'>C
-	*printBF(L2,5/) /'\n========\n'>C
-	∆i
-	↑(i<20)1
+3 ⇒ n
+*genBF(n/L1)
+*printBF(L1,n/) /'\n'>C
+*MobiusBF(L1,n/L2)
+*printBF(L2,n/) /'\n'>C
+/'======\n'>C
+5 ⇒ n
+*genBF(n/L1)
+*printBF(L1,n/) /'\n'>C
+*MobiusBF(L1,n/L2)
+*printBF(L2,n/) /'\n'>C
+/'======\n'>C
+6 ⇒ n
+*genBF(n/L1)
+*printBF(L1,n/) /'\n'>C
+*MobiusBF(L1,n/L2)
+*printBF(L2,n/) /'\n'>C
 **
 
+***Преобразование Мёбиуса булевой функции
 MobiusBF(L1,n/L2)
+***L1 - булева функция
+***n - количество аргументов булевой функции L1
+***L2 - преобразование Мёбиуса булевой функции L1
 L1 ⇒ L2
-In + 31 > 5 ⇒ q
-q ⊕ 1 ↦1	***↑(q≠1)1
-*Mobius(L2.0/b)
-32 - In ⇒ n
-b < n > n ⇒ L2.0
-→100
-§1
-	Oi
-	§2
-		*Mobius(L2i/b)
-		b ⇒ L2i
-		∆i
-		↑(i<q)2
-		***todotodotodo
-§100
+In + 31 > 5 ⇒ q ⇒ Q2	***Считаем, сколько элементов в L1
+Oi
+§1	***Выполняем преобразование Мёбиуса для каждого элемента L2
+	L2i < 1 & AAAAAAAAh ⊕ L2i ⇒ L2i
+	L2i < 2 & CCCCCCCCh ⊕ L2i ⇒ L2i
+	L2i < 4 & F0F0F0F0h ⊕ L2i ⇒ L2i
+	L2i < 8 & FF00FF00h ⊕ L2i ⇒ L2i
+	L2i < 16 ⊕ L2i ⇒ L2i
+	∆i
+	↑(i<q)1
+q ⊕ 1 ↦2	***↑(q≠1)2
+	32 - In ⇒ n
+	L2.0 < n > n ⇒ L2.0
+	→3
+§2
+	*MobiusBFHelper(L2,0,q/L2)	***Вызов рекурсивной функции
+§3
 	**
 
-Mobius(a/b)
-a ⇒ b
-b < 1	& AAAAAAAAh ⊕ b ⇒ b
-b < 2	& CCCCCCCCh ⊕ b ⇒ b
-b < 4	& F0F0F0F0h ⊕ b ⇒ b
-b < 8	& FF00FF00h ⊕ b ⇒ b
-b < 16	⊕ b ⇒ b
-**
+***Рекурсивная функция для выполнения преобразование Мёбиуса
+MobiusBFHelper(L1,l,h/L1)
+***L1 - булева функция
+***l - начальный индекс для преобразования
+***h - конечный индекс для преобразования
+***Преобразования выполняется для [l,h) элементов
+h - l > 1 ↪2 + l ⇒ j ⇒ m	***Проверяем условие выхода и находим индекс середины L1
+l ⇒ i
+§1
+	L1i ⊕ L1j ⇒ L1j
+	∆i ∆j
+	↑(j<h)1
+	*MobiusBFHelper(L1,l,m/L1)
+	*MobiusBFHelper(L1,m,h/L1)
+§2
+	**
 
 isBFT1(L1,n/f)
 Of
@@ -115,8 +137,7 @@ isBFMonotonic(L1,n/f)
 
 isBFMonotonicHelper(L1,l,h/f)
 Of
-h - l > 1 ⇒ m
-l + m ⇒ j
+h - l > 1 + l ⇒ j
 Oi
 §1
 	L1i & L1j ⊕ L1i ↦3
@@ -201,7 +222,7 @@ In + 31 > 5 ⇒ q
 	X > 16 ⇒ a
 	X ⊕ a @>L1
 	↑(Q1<q)1
-Q1 ⊕ 1 ↦ 2	***↑(Q1≠1)2
+Q1 ⊕ 1 ↦2	***↑(Q1≠1)2
 	32 - In ⇒ n
 	L1.0 > n ⇒ L1.0
 §2
@@ -260,13 +281,30 @@ Oa Oi
 printBF(L1,n/)
 ***L1 - boolean function
 ***n - the number of args
-In + 31 > 5 ⇒ n ⇒ i
-∇i
-§1
-	*printBool(L1i/)
+↑(n>4)4
+	@+F2(16) OQ2
+	32 - In ⇒ s
+	L1.0 < s > s ⇒ a
+	§1
+		a & 1 + '0' @>F2.0
+		a > 1 ⇒ a ↦1
+	In ⇒ n	***the number of bits
+	↑(Q2=n)3
+	§2
+		'0' @>F2.0
+		↑(Q2<n)2
+	§3
+		/F2>C
+		→6
+§4
+	In > 5 ⇒ n ⇒ i
 	∇i
-	↑(i<n)1
-**
+	§5
+		*printBool(L1i/)
+		∇i
+		↑(i<n)5
+§6
+	**
 
 ***Print boolean vector of 32bit variable
 printBool(a/)
