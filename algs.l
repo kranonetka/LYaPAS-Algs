@@ -293,6 +293,7 @@ Oa Oi
 printBF(L1,n/)
 ***L1 - boolean function
 ***n - the number of args
+***Вывод происходит от младших битов к старшим справа налево
 ↑(n>4)4
 	@+F2(16) OQ2
 	32 - In ⇒ s
