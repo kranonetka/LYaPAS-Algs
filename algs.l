@@ -171,7 +171,7 @@ l ⇒ i
 	∆i ∆j
 	↑(j<h)1
 ∆f
-h - l ⊕ 2 ↪3
+h - l ⊕ 2 ↪3	***↑((h-l)=2)3
 	*isBFMonotonicHelper(L1,l,m/f)
 	f ↪3
 	*isBFMonotonicHelper(L1,m,h/f)
@@ -227,15 +227,15 @@ reverseBits(a/b)
 ***a - vector to reverse
 ***b - reversed vector
 	a > 1 & 55555555h ⇒ v
-	a & 55555555h < 1 ∨ v ⇒ b
+	a & 55555555h < 1 ∨ v ⇒ b	**Меняем местами чётные и нечётные биты
 b > 2 & 33333333h ⇒ v
-b & 33333333h < 2 ∨ v ⇒ b
+b & 33333333h < 2 ∨ v ⇒ b	***Меняем местами пары битов
 	b > 4 & 0f0f0f0fh ⇒ v
-	b & 0f0f0f0fh < 4 ∨ v ⇒ b
+	b & 0f0f0f0fh < 4 ∨ v ⇒ b	***Меняем местами последовательности из 4-х битов
 b > 8 & 00ff00ffh ⇒ v
-b & 00ff00ffh < 8 ∨ v ⇒ b
+b & 00ff00ffh < 8 ∨ v ⇒ b	***Меняем местами байты
 	b > 16 ⇒ v
-	b < 16 ∨ v ⇒ b
+	b < 16 ∨ v ⇒ b	***Меняем местами 2-х байтовые слова
 **
 
 ***generate random boolean function
