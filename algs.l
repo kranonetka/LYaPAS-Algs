@@ -2,14 +2,13 @@ head(/)
 T⇒X
 @+L1(100)
 @+L2(100)
+@+L3(100)
 3 ⇒ n
-C3h ⇒ L1.0	***11000011
-1 ⇒ Q1
-*printBF(L1,n/) /'\n'>C
+*genBF(n/L1)
 *MobiusBF(L1,n/L2)
-*printBF(L2,n/) /'\n'>C
-*isBFLinear(L1,n/f)
-*printVal(f,10/) /'\n'>C
+*MobiusBF(L2,n/L3)
+*printBF(L1,n/) /'\n'>C
+*printBF(L3,n/) /'\n'>C 
 **
 
 ***Проверка булевой функции на линейность
@@ -133,29 +132,40 @@ isBFMonotonic(L1,n/f)
 ***L1 - boolean function
 ***n - the number of args
 ***f - flag(1/0)
-↑(n<6)1
-	In > 5 ⇒ n
-	*isMonotonicHelper(L1,0,n/f)
-	→2
+In + 31 > 5 ⇒ q
+Oi Of
 §1
-	/'n must be > 5\n'>C
+	L1i < 1 & AAAAAAAAh ⇒ a
+	a & L1i ⊕ a ↦2
+	L1i < 2 & CCCCCCCCh ⇒ a
+	a & L1i ⊕ a ↦2
+	L1i < 4 & F0F0F0F0h ⇒ a
+	a & L1i ⊕ a ↦2
+	L1i < 8 & FF00FF00h ⇒ a
+	a & L1i ⊕ a ↦2
+	L1i < 16 ⇒ a
+	a & L1i ⊕ a ↦2
+	∆i
+	↑(i<n)1
+∆f
+n ⊕ 1 ↪2
+	*isBFMonotonicHelper(L1,0,n/f)
 §2
 	**
 
 isBFMonotonicHelper(L1,l,h/f)
 Of
-h - l > 1 + l ⇒ j
-Oi
+h - l > 1 + l ⇒ m ⇒ j
+l ⇒ i
 §1
 	L1i & L1j ⊕ L1i ↦3
-	***↑(L1i>L1j)3
 	∆i ∆j
 	↑(j<h)1
-	∆f
-	h - l ⊕ 1 ↪3
-	*isMonotonicHelper(L1,l,m/f)
-	f↪3
-	*isMonotonicHelper(L1,m,h/f)
+∆f
+h - l ⊕ 2 ↪3
+	*isBFMonotonicHelper(L1,l,m/f)
+	f ↪3
+	*isBFMonotonicHelper(L1,m,h/f)
 §3
 	**
 
