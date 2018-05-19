@@ -3,12 +3,21 @@ T⇒X
 @+L1(100)
 @+L2(100)
 @+L3(100)
-3 ⇒ n
-*genBF(n/L1)
-*MobiusBF(L1,n/L2)
-*MobiusBF(L2,n/L3)
-*printBF(L1,n/) /'\n'>C
-*printBF(L3,n/) /'\n'>C 
+Op ∆p
+On ∆n
+§1
+	*genBF(n/L1)
+	*MobiusBF(L1,n/L2)
+	*MobiusBF(L2,n/L3)
+	*printBF(L1,n/) /'\n'>C
+	*printBF(L1,n/) /'\n========\n'>C
+	*isBFEquals(L1,L3,n/f)
+	f ↦2
+Op
+	§2
+	∆n
+	↑(n<7)1
+*printVal(p,10/) /'\n'>C
 **
 
 ***Проверка булевой функции на линейность
