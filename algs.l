@@ -1,23 +1,20 @@
 head(/)
 T⇒X
-@+L1(100)
-@+L2(100)
-@+L3(100)
-Op ∆p
-On ∆n
+{
+	mov eax,[ebp+1432]	;arg 1
+	mov eax,[eax]
+	and eax,0xff
+	sub al,'0'
+	mov [ebp+64],eax
+}
+*** p - parameter
+/'Param is '>C *printVal(p,10/) /'\n'>C
+@+L1(67108864)
+Oi
 §1
-	*genBF(n/L1)
-	*MobiusBF(L1,n/L2)
-	*MobiusBF(L2,n/L3)
-	*printBF(L1,n/) /'\n'>C
-	*printBF(L1,n/) /'\n========\n'>C
-	*isBFEquals(L1,L3,n/f)
-	f ↦2
-Op
-	§2
-	∆n
-	↑(n<7)1
-*printVal(p,10/) /'\n'>C
+	*genBF(p/L1)
+	∆i
+	↑(i<10000)1
 **
 
 ***Проверка булевой функции на линейность
