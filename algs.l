@@ -10,11 +10,14 @@ T⇒X
 *** p - parameter
 /'Param is '>C *printVal(p,10/) /'\n'>C
 @+L1(67108864)
+@+L2(67108864)
+Ip + 31 > 5 ⇒ Q1
+OL1
 Oi
 §1
-	*genBF(p/L1)
+	*MobiusBF(L1,p/L2)
 	∆i
-	↑(i<10000)1
+	↑(i<100)1
 **
 
 ***Проверка булевой функции на линейность
@@ -138,7 +141,7 @@ isBFMonotonic(L1,n/f)
 ***L1 - boolean function
 ***n - the number of args
 ***f - flag(1/0)
-In + 31 > 5 ⇒ q
+In + 31 > 5 ⇒ n
 Oi Of
 §1
 	L1i < 1 & AAAAAAAAh ⇒ a
