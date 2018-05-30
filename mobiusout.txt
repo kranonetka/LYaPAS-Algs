@@ -1,0 +1,155 @@
+Param is 1
+
+real	0m0.005s
+user	0m0.003s
+sys	0m0.002s
+Param is 2
+
+real	0m0.002s
+user	0m0.002s
+sys	0m0.000s
+Param is 3
+
+real	0m0.004s
+user	0m0.003s
+sys	0m0.000s
+Param is 4
+
+real	0m0.006s
+user	0m0.005s
+sys	0m0.002s
+Param is 5
+
+real	0m0.002s
+user	0m0.002s
+sys	0m0.000s
+Param is 6
+
+real	0m0.004s
+user	0m0.002s
+sys	0m0.000s
+Param is 7
+
+real	0m0.004s
+user	0m0.002s
+sys	0m0.002s
+Param is 8
+
+real	0m0.003s
+user	0m0.003s
+sys	0m0.001s
+Param is 9
+
+real	0m0.004s
+user	0m0.004s
+sys	0m0.000s
+Param is 10
+
+real	0m0.014s
+user	0m0.001s
+sys	0m0.005s
+Param is 11
+
+real	0m0.016s
+user	0m0.001s
+sys	0m0.006s
+Param is 12
+
+real	0m0.006s
+user	0m0.002s
+sys	0m0.002s
+Param is 13
+
+real	0m0.009s
+user	0m0.002s
+sys	0m0.002s
+Param is 14
+
+real	0m0.002s
+user	0m0.002s
+sys	0m0.000s
+Param is 15
+
+real	0m0.006s
+user	0m0.003s
+sys	0m0.000s
+Param is 16
+
+real	0m0.012s
+user	0m0.002s
+sys	0m0.001s
+Param is 17
+
+real	0m0.003s
+user	0m0.000s
+sys	0m0.003s
+Param is 18
+
+real	0m0.003s
+user	0m0.003s
+sys	0m0.000s
+Param is 19
+
+real	0m0.004s
+user	0m0.001s
+sys	0m0.002s
+Param is 20
+
+real	0m0.005s
+user	0m0.000s
+sys	0m0.003s
+Param is 21
+
+real	0m0.003s
+user	0m0.002s
+sys	0m0.002s
+Param is 22
+
+real	0m0.004s
+user	0m0.002s
+sys	0m0.003s
+Param is 23
+
+real	0m0.005s
+user	0m0.000s
+sys	0m0.005s
+Param is 24
+
+real	0m0.011s
+user	0m0.001s
+sys	0m0.010s
+Param is 25
+
+real	0m0.023s
+user	0m0.000s
+sys	0m0.012s
+Param is 26
+
+real	0m0.026s
+user	0m0.000s
+sys	0m0.029s
+Param is 27
+
+real	0m0.046s
+user	0m0.004s
+sys	0m0.042s
+Param is 28
+
+real	0m0.068s
+user	0m0.012s
+sys	0m0.057s
+Param is 29
+
+real	0m0.120s
+user	0m0.034s
+sys	0m0.077s
+Param is 30
+
+real	0m0.231s
+user	0m0.025s
+sys	0m0.202s
+Param is 31
+
+real	0m0.438s
+user	0m0.050s
+sys	0m0.384s
