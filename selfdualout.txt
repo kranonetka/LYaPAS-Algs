@@ -1,155 +1,155 @@
 Param is 1
 
-real	0m0.003s
-user	0m0.002s
+real	0m0.002s
+user	0m0.001s
 sys	0m0.001s
 Param is 2
 
-real	0m0.007s
-user	0m0.000s
-sys	0m0.007s
+real	0m0.003s
+user	0m0.001s
+sys	0m0.002s
 Param is 3
+
+real	0m0.002s
+user	0m0.002s
+sys	0m0.000s
+Param is 4
+
+real	0m0.003s
+user	0m0.001s
+sys	0m0.002s
+Param is 5
 
 real	0m0.003s
 user	0m0.002s
 sys	0m0.002s
-Param is 4
-
-real	0m0.004s
-user	0m0.002s
-sys	0m0.000s
-Param is 5
+Param is 6
 
 real	0m0.002s
 user	0m0.001s
 sys	0m0.001s
-Param is 6
-
-real	0m0.003s
-user	0m0.002s
-sys	0m0.003s
 Param is 7
 
-real	0m0.002s
-user	0m0.002s
+real	0m0.005s
+user	0m0.004s
 sys	0m0.000s
 Param is 8
 
-real	0m0.002s
-user	0m0.002s
-sys	0m0.000s
-Param is 9
-
 real	0m0.004s
 user	0m0.003s
+sys	0m0.001s
+Param is 9
+
+real	0m0.008s
+user	0m0.002s
 sys	0m0.000s
 Param is 10
 
-real	0m0.003s
-user	0m0.001s
-sys	0m0.002s
-Param is 11
-
-real	0m0.004s
-user	0m0.004s
-sys	0m0.000s
-Param is 12
-
-real	0m0.004s
-user	0m0.002s
-sys	0m0.002s
-Param is 13
-
-real	0m0.009s
-user	0m0.003s
-sys	0m0.002s
-Param is 14
-
-real	0m0.007s
-user	0m0.004s
-sys	0m0.000s
-Param is 15
-
-real	0m0.004s
-user	0m0.002s
-sys	0m0.002s
-Param is 16
-
-real	0m0.009s
-user	0m0.002s
-sys	0m0.002s
-Param is 17
-
 real	0m0.008s
-user	0m0.005s
-sys	0m0.003s
-Param is 18
-
-real	0m0.003s
-user	0m0.002s
-sys	0m0.000s
-Param is 19
-
-real	0m0.006s
 user	0m0.000s
-sys	0m0.003s
-Param is 20
+sys	0m0.008s
+Param is 11
 
 real	0m0.003s
 user	0m0.001s
 sys	0m0.001s
-Param is 21
+Param is 12
 
-real	0m0.015s
+real	0m0.004s
 user	0m0.001s
 sys	0m0.003s
-Param is 22
+Param is 13
 
-real	0m0.008s
+real	0m0.002s
 user	0m0.002s
-sys	0m0.007s
-Param is 23
+sys	0m0.000s
+Param is 14
+
+real	0m0.011s
+user	0m0.003s
+sys	0m0.002s
+Param is 15
+
+real	0m0.007s
+user	0m0.004s
+sys	0m0.004s
+Param is 16
 
 real	0m0.006s
 user	0m0.006s
 sys	0m0.000s
+Param is 17
+
+real	0m0.010s
+user	0m0.006s
+sys	0m0.004s
+Param is 18
+
+real	0m0.023s
+user	0m0.014s
+sys	0m0.000s
+Param is 19
+
+real	0m0.025s
+user	0m0.021s
+sys	0m0.000s
+Param is 20
+
+real	0m0.040s
+user	0m0.035s
+sys	0m0.004s
+Param is 21
+
+real	0m0.067s
+user	0m0.064s
+sys	0m0.001s
+Param is 22
+
+real	0m0.147s
+user	0m0.132s
+sys	0m0.008s
+Param is 23
+
+real	0m0.264s
+user	0m0.252s
+sys	0m0.004s
 Param is 24
 
-real	0m0.014s
-user	0m0.011s
-sys	0m0.000s
+real	0m0.517s
+user	0m0.506s
+sys	0m0.008s
 Param is 25
 
-real	0m0.019s
-user	0m0.001s
-sys	0m0.013s
+real	0m0.999s
+user	0m0.981s
+sys	0m0.006s
 Param is 26
 
-real	0m0.021s
-user	0m0.000s
-sys	0m0.021s
+real	0m1.965s
+user	0m1.936s
+sys	0m0.024s
 Param is 27
 
-real	0m0.042s
-user	0m0.012s
-sys	0m0.030s
+real	0m3.978s
+user	0m3.921s
+sys	0m0.041s
 Param is 28
 
-real	0m0.080s
-user	0m0.013s
-sys	0m0.057s
+real	0m7.892s
+user	0m7.828s
+sys	0m0.062s
 Param is 29
 
-real	0m0.149s
-user	0m0.012s
-sys	0m0.134s
+real	0m15.841s
+user	0m15.697s
+sys	0m0.124s
 Param is 30
 
-real	0m0.249s
-user	0m0.028s
-sys	0m0.215s
+real	0m31.061s
+user	0m30.802s
+sys	0m0.232s
 Param is 31
 
-real	0m0.451s
-user	0m0.045s
-sys	0m0.404s
+real	1m2.309s
+user	1m1.823s
+sys	0m0.437s
