@@ -97,18 +97,11 @@ l ⇒ i
 
 isBFT1(L1,n/f)
 Of
-↑(n>4)1
-	In ⇒ n
-	∇n
-	In & L1.0 ↪2
+In + 31 > 5 ⇒ i	***Индекс элемента комплекса
+In - 1 & 31 ⇒ j	***Номер бита
+L1i & Ij ↪1
 	∆f
-	→2
 §1
-	In > 5 ⇒ q
-	∇q
-	L1q & 80000000h ↪2
-	∆f
-§2
 	**
 
 ***Boolean function belongs T0 check
